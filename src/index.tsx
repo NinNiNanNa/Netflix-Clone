@@ -5,6 +5,7 @@ import "./assets/fonts/font.css";
 import { ThemeProvider } from "styled-components";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { theme } from "./theme";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 const client = new QueryClient();
 
@@ -17,6 +18,7 @@ root.render(
     <ThemeProvider theme={theme}>
       <GlobalStyle />
       <App />
+      <ReactQueryDevtools initialIsOpen={true} />
     </ThemeProvider>
   </QueryClientProvider>
   // </React.StrictMode>
