@@ -13,6 +13,7 @@ import { useDetectClickOutside } from "react-detect-click-outside";
 
 const Nav = styled(motion.nav)`
   padding: 20px 60px;
+  z-index: 99;
   position: fixed;
   top: 0;
   width: 100%;
