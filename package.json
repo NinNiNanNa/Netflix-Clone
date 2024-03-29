@@ -24,6 +24,8 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -49,6 +51,8 @@
   },
   "devDependencies": {
     "@tanstack/react-query-devtools": "^5.28.10",
-    "@types/react-router-dom": "^5.3.3"
-  }
+    "@types/react-router-dom": "^5.3.3",
+    "gh-pages": "^6.1.1"
+  },
+  "homepage": "https://NinNiNanNa.github.io/Netflix-Clone"
 }
