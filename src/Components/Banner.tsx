@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { CgInfo } from "react-icons/cg";
 import { makeImagePath } from "../Utils/utils";
 import { IGetMoviesResult } from "../services/movie";
+import { useHistory } from "react-router-dom";
 
 const BannerWrap = styled.div<{ $bgPhoto: string }>`
   height: 100vh;
@@ -60,12 +61,17 @@ interface IProps {
 }
 
 function Banner({ data }: IProps) {
+  const history = useHistory();
+  const onBoxClicked = (id: number) => {
+    history.push(`/movies/nowPlaying/${id}`);
+    document.body.classList.add("scroll-none");
+  };
   return (
     <BannerWrap $bgPhoto={makeImagePath(data?.results[0].backdrop_path || "")}>
       <BannerInfo>
         <h1>{data?.results[0].title}</h1>
         <p>{data?.results[0].overview}</p>
-        <DetailBtn>
+        <DetailBtn onClick={() => onBoxClicked(Number(data?.results[0].id))}>
           <CgInfo />
           상세 정보
         </DetailBtn>

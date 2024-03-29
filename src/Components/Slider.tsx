@@ -3,11 +3,17 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 import { IoIosArrowBack } from "react-icons/io";
 import { IoIosArrowForward } from "react-icons/io";
-import { useHistory } from "react-router-dom";
+import { useHistory, useRouteMatch } from "react-router-dom";
 import { useWindowDimensions } from "../hooks/useWindowDimensions";
 import { IGetMoviesResult } from "../services/movie";
 import { makeImagePath } from "../Utils/utils";
+import MovieDetail from "./MovieDetail";
 
+const Wrap = styled.div`
+  padding: 0 60px;
+  position: relative;
+  top: -100px;
+`;
 const Title = styled.h2`
   margin-bottom: 15px;
   font-size: 25px;
@@ -180,70 +186,78 @@ function Slider({ title, data, type, path }: IProps) {
   // Box 클릭시 경로 변경
   const history = useHistory();
   const onBoxClicked = (id: number) => {
-    history.push(`/${path}/${id}`);
+    history.push(`/${path}/${type}/${id}`);
+    document.body.classList.add("scroll-none");
   };
+  const routeMatch = useRouteMatch<{ id: string }>(`/${path}/${type}/:id`);
+  console.log(routeMatch);
   return (
     <>
-      <Title>{title}</Title>
-      <SliderWrap>
-        <ArrowWrap>
-          <Arrow
-            onClick={prevIndex}
-            whileHover={{ backgroundColor: "rgba(0, 0, 0, 0.3)" }}
-          >
-            <IoIosArrowBack />
-          </Arrow>
-          <Arrow
-            onClick={nextIndex}
-            whileHover={{ backgroundColor: "rgba(0, 0, 0, 0.3)" }}
-          >
-            <IoIosArrowForward />
-          </Arrow>
-        </ArrowWrap>
-        <AnimatePresence
-          custom={back}
-          initial={false}
-          onExitComplete={toggleLeaving}
-        >
-          <Row
-            key={index}
+      <Wrap>
+        <Title>{title}</Title>
+        <SliderWrap>
+          <ArrowWrap>
+            <Arrow
+              onClick={prevIndex}
+              whileHover={{ backgroundColor: "rgba(0, 0, 0, 0.3)" }}
+            >
+              <IoIosArrowBack />
+            </Arrow>
+            <Arrow
+              onClick={nextIndex}
+              whileHover={{ backgroundColor: "rgba(0, 0, 0, 0.3)" }}
+            >
+              <IoIosArrowForward />
+            </Arrow>
+          </ArrowWrap>
+          <AnimatePresence
             custom={back}
-            variants={rowVariants}
-            initial="hidden"
-            animate="visible"
-            exit="exit"
-            transition={{ type: "tween", duration: 1 }}
+            initial={false}
+            onExitComplete={toggleLeaving}
           >
-            {data?.results
-              .slice(1)
-              .slice(OFFSET * index, OFFSET * index + OFFSET)
-              .map((data, idx) => (
-                <Box
-                  layoutId={`${type}${data.id}`}
-                  key={data.id}
-                  custom={idx}
-                  onClick={() => onBoxClicked(data.id)}
-                  variants={boxVariants}
-                  initial="normal"
-                  whileHover="hover"
-                  transition={{ type: "tween" }}
-                  $bgPhoto={makeImagePath(data.backdrop_path, "w500")}
-                >
-                  <InfoWrap>
-                    <Info variants={infoVariants}>
-                      <h3>{data.title}</h3>
-                      <h4>{data.original_title}</h4>
-                      <div>
-                        <h5>{Math.ceil(data.vote_average * 10)}%</h5>
-                        <h6>{data.release_date.slice(0, 4)}</h6>
-                      </div>
-                    </Info>
-                  </InfoWrap>
-                </Box>
-              ))}
-          </Row>
-        </AnimatePresence>
-      </SliderWrap>
+            <Row
+              key={index}
+              custom={back}
+              variants={rowVariants}
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+              transition={{ type: "tween", duration: 1 }}
+            >
+              {data?.results
+                .slice(1)
+                .slice(OFFSET * index, OFFSET * index + OFFSET)
+                .map((data, idx) => (
+                  <Box
+                    layoutId={`${type}${data.id}`}
+                    key={data.id}
+                    custom={idx}
+                    onClick={() => onBoxClicked(data.id)}
+                    variants={boxVariants}
+                    initial="normal"
+                    whileHover="hover"
+                    transition={{ type: "tween" }}
+                    $bgPhoto={makeImagePath(data.backdrop_path, "w500")}
+                  >
+                    <InfoWrap>
+                      <Info variants={infoVariants}>
+                        <h3>{data.title}</h3>
+                        <h4>{data.original_title}</h4>
+                        <div>
+                          <h5>{Math.ceil(data.vote_average * 10)}%</h5>
+                          <h6>{data.release_date.slice(0, 4)}</h6>
+                        </div>
+                      </Info>
+                    </InfoWrap>
+                  </Box>
+                ))}
+            </Row>
+          </AnimatePresence>
+        </SliderWrap>
+      </Wrap>
+      {routeMatch && path === "movies" ? (
+        <MovieDetail id={routeMatch.params.id} type={type} />
+      ) : null}
     </>
   );
 }

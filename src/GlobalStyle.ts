@@ -62,6 +62,9 @@ const GlobalStyle = createGlobalStyle`
     text-decoration: none;
     color: inherit;
   }
+  .scroll-none {
+    overflow: hidden;
+  }
 `;
 
 export default GlobalStyle;
