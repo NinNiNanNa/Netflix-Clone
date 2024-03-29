@@ -1,0 +1,25 @@
+{
+  "files": {
+    "main.css": "/Netflix-Clone/static/css/main.4bf543d2.css",
+    "main.js": "/Netflix-Clone/static/js/main.175c70a7.js",
+    "static/media/NetflixSans_W_Blk.woff": "/Netflix-Clone/static/media/NetflixSans_W_Blk.bea3baed84f8fe503d08.woff",
+    "static/media/NetflixSans_W_Bd.woff": "/Netflix-Clone/static/media/NetflixSans_W_Bd.e4bef10f76490ea55826.woff",
+    "static/media/NetflixSans_W_Md.woff": "/Netflix-Clone/static/media/NetflixSans_W_Md.60232abdb63e25430e3f.woff",
+    "static/media/NetflixSans_W_Lt.woff": "/Netflix-Clone/static/media/NetflixSans_W_Lt.cdaf9476ff5e17fe55d2.woff",
+    "static/media/NetflixSans_W_Rg.woff": "/Netflix-Clone/static/media/NetflixSans_W_Rg.4a5d6ec8e07842059f60.woff",
+    "static/media/NetflixSans_W_Th.woff": "/Netflix-Clone/static/media/NetflixSans_W_Th.5c54746a3f1b41f6bb51.woff",
+    "static/media/NetflixSans_W_Blk.woff2": "/Netflix-Clone/static/media/NetflixSans_W_Blk.29e6d806de0efce97a15.woff2",
+    "static/media/NetflixSans_W_Bd.woff2": "/Netflix-Clone/static/media/NetflixSans_W_Bd.2cd128d8209cae108cbe.woff2",
+    "static/media/NetflixSans_W_Md.woff2": "/Netflix-Clone/static/media/NetflixSans_W_Md.a7eb753e6dc0059a0b06.woff2",
+    "static/media/NetflixSans_W_Lt.woff2": "/Netflix-Clone/static/media/NetflixSans_W_Lt.fd2365013929182277eb.woff2",
+    "static/media/NetflixSans_W_Rg.woff2": "/Netflix-Clone/static/media/NetflixSans_W_Rg.0f89544675950f86a3c9.woff2",
+    "static/media/NetflixSans_W_Th.woff2": "/Netflix-Clone/static/media/NetflixSans_W_Th.b8f0827eea5cccd22f15.woff2",
+    "index.html": "/Netflix-Clone/index.html",
+    "main.4bf543d2.css.map": "/Netflix-Clone/static/css/main.4bf543d2.css.map",
+    "main.175c70a7.js.map": "/Netflix-Clone/static/js/main.175c70a7.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.4bf543d2.css",
+    "static/js/main.175c70a7.js"
+  ]
+}
