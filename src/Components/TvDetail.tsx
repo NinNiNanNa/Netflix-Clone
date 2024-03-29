@@ -273,7 +273,10 @@ function TvDetail({ id, type }: IProps) {
                   )}
                 ></TvImg>
                 <TvTitle>
-                  <h2>{detailData.last_episode_to_air.name}</h2>
+                  <h2>
+                    {detailData.last_episode_to_air.episode_number}화{" "}
+                    {detailData.last_episode_to_air.name}
+                  </h2>
                   <h3>
                     {detailData.last_episode_to_air.air_date} ・{" "}
                     {detailData.last_episode_to_air.runtime} 분
@@ -293,7 +296,10 @@ function TvDetail({ id, type }: IProps) {
                   )}
                 ></TvImg>
                 <TvTitle>
-                  <h2>{detailData.next_episode_to_air.name}</h2>
+                  <h2>
+                    {detailData.next_episode_to_air.episode_number}화{" "}
+                    {detailData.next_episode_to_air.name}
+                  </h2>
                   <h3>
                     {detailData.next_episode_to_air.air_date} ・{" "}
                     {detailData.next_episode_to_air.runtime} 분
