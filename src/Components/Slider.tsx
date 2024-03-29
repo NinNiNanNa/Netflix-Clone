@@ -5,9 +5,10 @@ import { IoIosArrowBack } from "react-icons/io";
 import { IoIosArrowForward } from "react-icons/io";
 import { useHistory, useRouteMatch } from "react-router-dom";
 import { useWindowDimensions } from "../hooks/useWindowDimensions";
-import { IGetMoviesResult } from "../services/movie";
 import { makeImagePath } from "../Utils/utils";
+import { IGetLists } from "../services/common";
 import MovieDetail from "./MovieDetail";
+import TvDetail from "./TvDetail";
 
 const Wrap = styled.div`
   padding: 0 60px;
@@ -131,7 +132,7 @@ const infoVariants = {
 
 interface IProps {
   title: string;
-  data?: IGetMoviesResult;
+  data?: IGetLists;
   type: string;
   path: string;
 }
@@ -241,11 +242,21 @@ function Slider({ title, data, type, path }: IProps) {
                   >
                     <InfoWrap>
                       <Info variants={infoVariants}>
-                        <h3>{data.title}</h3>
-                        <h4>{data.original_title}</h4>
+                        {(data.title || data.name) && (
+                          <h3>{data.title || data.name}</h3>
+                        )}
+                        {(data.original_title || data.original_name) && (
+                          <h4>{data.original_title || data.original_name}</h4>
+                        )}
                         <div>
                           <h5>{Math.ceil(data.vote_average * 10)}%</h5>
-                          <h6>{data.release_date.slice(0, 4)}</h6>
+                          <h6>
+                            {data.release_date
+                              ? data.release_date.slice(0, 4)
+                              : data.first_air_date
+                              ? data.first_air_date.slice(0, 4)
+                              : ""}
+                          </h6>
                         </div>
                       </Info>
                     </InfoWrap>
@@ -257,6 +268,9 @@ function Slider({ title, data, type, path }: IProps) {
       </Wrap>
       {routeMatch && path === "movies" ? (
         <MovieDetail id={routeMatch.params.id} type={type} />
+      ) : null}
+      {routeMatch && path === "tv" ? (
+        <TvDetail id={routeMatch.params.id} type={type} />
       ) : null}
     </>
   );

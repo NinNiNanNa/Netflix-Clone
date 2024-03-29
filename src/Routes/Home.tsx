@@ -1,11 +1,8 @@
 import styled from "styled-components";
 import Loader from "../Components/Loader";
 import Banner from "../Components/Banner";
-import { useMultipleQuery } from "../hooks/useMultipleQuery";
 import Slider from "../Components/Slider";
-import { useRouteMatch } from "react-router-dom";
-import MovieDetail from "../Components/MovieDetail";
-import { AnimatePresence } from "framer-motion";
+import { useMovieMultipleQuery } from "../hooks/useMovieMultipleQuery";
 
 const Wrapper = styled.div`
   overflow: hidden;
@@ -18,17 +15,14 @@ function Home() {
     { data: popularData, isLoading: loadingPopular },
     { data: topData, isLoading: loadingTop },
     { data: upData, isLoading: loadingUp },
-  ] = useMultipleQuery();
-
-  //
-
+  ] = useMovieMultipleQuery();
   return (
     <Wrapper>
       {loadingNow && loadingPopular && loadingTop && loadingUp ? (
         <Loader />
       ) : (
         <>
-          <Banner data={nowData} />
+          <Banner data={nowData?.results[0]} path="movies" type="nowPlaying" />
           <Slider
             title="지금 상영중인 영화"
             data={nowData}

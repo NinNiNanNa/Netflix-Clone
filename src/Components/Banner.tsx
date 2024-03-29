@@ -1,8 +1,8 @@
 import styled from "styled-components";
 import { CgInfo } from "react-icons/cg";
 import { makeImagePath } from "../Utils/utils";
-import { IGetMoviesResult } from "../services/movie";
 import { useHistory } from "react-router-dom";
+import { IList } from "../services/common";
 
 const BannerWrap = styled.div<{ $bgPhoto: string }>`
   height: 100vh;
@@ -57,21 +57,23 @@ const DetailBtn = styled.div`
 `;
 
 interface IProps {
-  data?: IGetMoviesResult;
+  data?: IList;
+  path: string;
+  type: string;
 }
 
-function Banner({ data }: IProps) {
+function Banner({ data, path, type }: IProps) {
   const history = useHistory();
   const onBoxClicked = (id: number) => {
-    history.push(`/movies/nowPlaying/${id}`);
+    history.push(`/${path}/${type}/${id}`);
     document.body.classList.add("scroll-none");
   };
   return (
-    <BannerWrap $bgPhoto={makeImagePath(data?.results[0].backdrop_path || "")}>
+    <BannerWrap $bgPhoto={makeImagePath(data?.backdrop_path || "")}>
       <BannerInfo>
-        <h1>{data?.results[0].title}</h1>
-        <p>{data?.results[0].overview}</p>
-        <DetailBtn onClick={() => onBoxClicked(Number(data?.results[0].id))}>
+        {<h1>{data?.title}</h1> && <h1>{data?.name}</h1>}
+        <p>{data?.overview}</p>
+        <DetailBtn onClick={() => onBoxClicked(Number(data?.id))}>
           <CgInfo />
           상세 정보
         </DetailBtn>

@@ -3,12 +3,8 @@ import styled from "styled-components";
 import { useHistory } from "react-router-dom";
 import { makeImagePath } from "../Utils/utils";
 import { useQuery } from "@tanstack/react-query";
-import {
-  IGetDetailsMovieResult,
-  getMovieDetails,
-  getSimilar,
-} from "../services/movie";
-import { IGetCreditsResult, IGetLists, getCredits } from "../services/common";
+import { IGetCreditsResult, getCredits } from "../services/common";
+import { IGetDetailsTvResult, getTvDetails } from "../services/tv";
 
 const Overlay = styled(motion.div)`
   z-index: 100;
@@ -19,7 +15,7 @@ const Overlay = styled(motion.div)`
   background-color: rgba(0, 0, 0, 0.5);
   opacity: 0;
 `;
-const MovieWrap = styled(motion.div)`
+const TvWrap = styled(motion.div)`
   margin: 0 auto;
   z-index: 101;
   position: absolute;
@@ -35,14 +31,14 @@ const MovieWrap = styled(motion.div)`
     display: none;
   }
 `;
-const MovieCover = styled.div<{ $bgPhoto: string }>`
+const TvCover = styled.div<{ $bgPhoto: string }>`
   width: 100%;
   height: 450px;
   background-image: linear-gradient(rgba(0, 0, 0, 0.1), rgb(20, 20, 20)),
     url(${(props) => props.$bgPhoto});
   background-size: cover;
 `;
-const MovieInfo = styled.div`
+const TvInfo = styled.div`
   padding: 30px;
   position: absolute;
   top: 150px;
@@ -89,14 +85,6 @@ const Title = styled.div`
 `;
 const BodyInfo = styled.div`
   margin-top: 30px;
-`;
-const TagLine = styled.blockquote`
-  padding: 15px;
-  border-left: 3px solid #f3d609;
-  font-size: 20px;
-  font-style: italic;
-  line-height: 150%;
-  color: ${(props) => props.theme.white.lighter};
 `;
 const Overview = styled.p`
   margin-top: 30px;
@@ -160,6 +148,7 @@ const Box = styled.div`
   }
 `;
 const PersonImg = styled.div<{ profile: string }>`
+  margin: 0 auto;
   width: 90px;
   height: 90px;
   display: flex;
@@ -171,30 +160,51 @@ const PersonImg = styled.div<{ profile: string }>`
   background-size: cover;
   background-position: center center;
 `;
-const MovieBox = styled.div`
-  text-align: center;
-  cursor: pointer;
+const EpisodeTitle = styled.h2`
+  margin-top: 30px;
+  font-size: 20px;
+  font-weight: 900;
 `;
-const MovieImg = styled.div<{ $bgPhoto: string }>`
-  width: 200px;
-  height: 100px;
+const TvBox = styled.div`
+  margin-top: 15px;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  border: 2px solid ${(props) => props.theme.white.lighter};
+  border-radius: 10px;
+  overflow: hidden;
+`;
+const TvImg = styled.div<{ $bgPhoto: string }>`
+  width: 35%;
   background-color: rgba(0, 0, 0, 0.5);
   background-image: url(${(props) => props.$bgPhoto});
   background-size: cover;
   background-position: center center;
   box-shadow: rgba(0, 0, 0, 0.75) 0px 5px 10px;
 `;
-const MovieTitle = styled.h3`
-  width: 200px;
-  margin-top: 15px;
-  font-weight: 900;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  word-break: break-all;
+const TvTitle = styled.div`
+  padding: 20px;
+  width: 65%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  h2 {
+    margin-bottom: 15px;
+    font-size: 18px;
+    font-weight: 900;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    word-break: break-all;
+  }
+  p {
+    margin-top: 15px;
+    overflow: hidden;
+    white-space: normal;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    word-break: keep-all;
+  }
 `;
 
 interface IProps {
@@ -202,27 +212,23 @@ interface IProps {
   type: string;
 }
 
-function MovieDetail({ id, type }: IProps) {
+function TvDetail({ id, type }: IProps) {
   const { scrollY } = useScroll();
-  // API로 가져온 영화 상세정보
+  // API로 가져온 TV 상세정보
   const { data: detailData, isLoading: loadingDetail } =
-    useQuery<IGetDetailsMovieResult>({
+    useQuery<IGetDetailsTvResult>({
       queryKey: ["movie", "details"],
-      queryFn: () => getMovieDetails(id),
+      queryFn: () => getTvDetails(id),
     });
   const { data: creditData, isLoading: loadingCredit } =
     useQuery<IGetCreditsResult>({
       queryKey: ["movie", "credits"],
-      queryFn: () => getCredits("movie", "credits", id),
+      queryFn: () => getCredits("tv", "credits", id),
     });
-  const { data: similarData, isLoading: loadingSimilar } = useQuery<IGetLists>({
-    queryKey: ["movie", "similar"],
-    queryFn: () => getSimilar("similar", id),
-  });
   // Overlay영역 클릭시 경로 변경
   const history = useHistory();
   const onOverlayClicked = () => {
-    history.push("/");
+    history.push("/tv");
     document.body.classList.remove("scroll-none");
   };
   return (
@@ -232,11 +238,11 @@ function MovieDetail({ id, type }: IProps) {
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
       />
-      <MovieWrap layoutId={`${type}${id}`} style={{ top: scrollY.get() + 100 }}>
-        <MovieCover
+      <TvWrap layoutId={`${type}${id}`} style={{ top: scrollY.get() + 100 }}>
+        <TvCover
           $bgPhoto={makeImagePath(detailData?.backdrop_path || "")}
-        ></MovieCover>
-        <MovieInfo>
+        ></TvCover>
+        <TvInfo>
           <HeadInfo>
             <Poster
               src={makeImagePath(detailData?.poster_path || "", "w500")}
@@ -245,26 +251,58 @@ function MovieDetail({ id, type }: IProps) {
               {detailData?.genres.map((genre) => (
                 <span key={genre.id}>{genre.name}</span>
               ))}
-              <h2>{detailData?.title}</h2>
+              <h2>{detailData?.name}</h2>
               <h3>
-                {detailData?.original_title} ・{" "}
-                {detailData?.release_date?.slice(0, 4)}
+                {detailData?.original_name} ・ {detailData?.last_air_date}
               </h3>
               <div>
                 <h4>{Math.ceil(Number(detailData?.vote_average) * 10)}%</h4>
-                <h5>
-                  {Math.floor(Number(detailData?.runtime) / 60)}시간{" "}
-                  {Number(detailData?.runtime) % 60}분
-                </h5>
               </div>
             </Title>
           </HeadInfo>
           <BodyInfo>
-            {detailData?.tagline ? (
-              <TagLine>{detailData?.tagline}</TagLine>
-            ) : null}
             <Overview>{detailData?.overview}</Overview>
           </BodyInfo>
+          {detailData?.last_episode_to_air ? (
+            <>
+              <EpisodeTitle>이전 회차</EpisodeTitle>
+              <TvBox>
+                <TvImg
+                  $bgPhoto={makeImagePath(
+                    detailData?.last_episode_to_air.still_path || ""
+                  )}
+                ></TvImg>
+                <TvTitle>
+                  <h2>{detailData.last_episode_to_air.name}</h2>
+                  <h3>
+                    {detailData.last_episode_to_air.air_date} ・{" "}
+                    {detailData.last_episode_to_air.runtime} 분
+                  </h3>
+                  <p>{detailData.last_episode_to_air.overview}</p>
+                </TvTitle>
+              </TvBox>
+            </>
+          ) : null}
+          {detailData?.next_episode_to_air ? (
+            <>
+              <EpisodeTitle>다음 회차</EpisodeTitle>
+              <TvBox>
+                <TvImg
+                  $bgPhoto={makeImagePath(
+                    detailData?.next_episode_to_air.still_path || ""
+                  )}
+                ></TvImg>
+                <TvTitle>
+                  <h2>{detailData.next_episode_to_air.name}</h2>
+                  <h3>
+                    {detailData.next_episode_to_air.air_date} ・{" "}
+                    {detailData.next_episode_to_air.runtime} 분
+                  </h3>
+                  <p>{detailData.next_episode_to_air.overview}</p>
+                </TvTitle>
+              </TvBox>
+            </>
+          ) : null}
           {creditData?.cast ? (
             <EtcInfo>
               <span>
@@ -288,58 +326,10 @@ function MovieDetail({ id, type }: IProps) {
               </Row>
             </EtcInfo>
           ) : null}
-          {creditData?.crew ? (
-            <EtcInfo>
-              <span>
-                <h2>제작진</h2>
-                <h3>총 {creditData.crew.length}명</h3>
-              </span>
-              <Row>
-                {creditData.crew.map((crew) => (
-                  <Box key={crew.credit_id}>
-                    {crew.profile_path === null ? (
-                      <PersonImg profile="">이미지없음</PersonImg>
-                    ) : (
-                      <PersonImg
-                        profile={makeImagePath(crew.profile_path || "")}
-                      />
-                    )}
-                    <h3>{crew.name}</h3>
-                    <h4>{crew.known_for_department}</h4>
-                  </Box>
-                ))}
-              </Row>
-            </EtcInfo>
-          ) : null}
-          {similarData ? (
-            <EtcInfo>
-              <span>
-                <h2>비슷한 영화</h2>
-                <h3>총 {similarData.results.length}편</h3>
-              </span>
-              <Row>
-                {similarData.results.map((similar) => (
-                  <MovieBox key={similar.id}>
-                    {similar.backdrop_path == null ? (
-                      <MovieImg $bgPhoto="">이미지 없음</MovieImg>
-                    ) : (
-                      <MovieImg
-                        $bgPhoto={makeImagePath(
-                          similar.backdrop_path || "",
-                          "w500"
-                        )}
-                      />
-                    )}
-                    <MovieTitle>{similar.title}</MovieTitle>
-                  </MovieBox>
-                ))}
-              </Row>
-            </EtcInfo>
-          ) : null}
-        </MovieInfo>
-      </MovieWrap>
+        </TvInfo>
+      </TvWrap>
     </>
   );
 }
 
-export default MovieDetail;
+export default TvDetail;
