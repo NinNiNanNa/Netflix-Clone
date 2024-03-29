@@ -228,7 +228,7 @@ function TvDetail({ id, type }: IProps) {
   // Overlay영역 클릭시 경로 변경
   const history = useHistory();
   const onOverlayClicked = () => {
-    history.push("/tv");
+    history.goBack();
     document.body.classList.remove("scroll-none");
   };
   return (

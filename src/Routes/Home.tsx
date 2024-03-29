@@ -30,7 +30,7 @@ function Home() {
             path="movies"
           />
           <Slider
-            title="최고평점 Top10 영화"
+            title="최고평점 영화"
             data={topData}
             type="topRated"
             path="movies"

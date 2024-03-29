@@ -24,7 +24,7 @@ function Tv() {
         <>
           <Banner data={todayData?.results[0]} path="tv" type="airingToday" />
           <Slider
-            title="지금 방영중인 프로그램"
+            title="오늘 방영하는 프로그램"
             data={todayData}
             type="airingToday"
             path="tv"
@@ -36,13 +36,13 @@ function Tv() {
             path="tv"
           />
           <Slider
-            title="지금 방영중인 프로그램"
+            title="인기있는 프로그램"
             data={popularData}
             type="popular"
             path="tv"
           />
           <Slider
-            title="지금 방영중인 프로그램"
+            title="최고평점 프로그램"
             data={topData}
             type="topRated"
             path="tv"

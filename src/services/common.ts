@@ -13,6 +13,7 @@ export interface IList {
   name: string;
   overview: string;
   vote_average: number;
+  media_type: string;
 }
 export interface IGetLists {
   page: number;
@@ -51,5 +52,11 @@ export function getTvs(type: string, page: number) {
 export function getCredits(path: string, type: string, id: string) {
   return fetch(
     `${BASE_URL}/${path}/${id}/${type}?api_key=${API_KEY}&language=ko-KR`
+  ).then((res) => res.json());
+}
+
+export function getSearch(keyword: string) {
+  return fetch(
+    `${BASE_URL}/search/multi?api_key=${API_KEY}&include_adult=false&language=ko-KR&query=${keyword}`
   ).then((res) => res.json());
 }

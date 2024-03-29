@@ -71,7 +71,7 @@ function Banner({ data, path, type }: IProps) {
   return (
     <BannerWrap $bgPhoto={makeImagePath(data?.backdrop_path || "")}>
       <BannerInfo>
-        {<h1>{data?.title}</h1> && <h1>{data?.name}</h1>}
+        {(data?.title || data?.name) && <h1>{data?.title || data?.name}</h1>}
         <p>{data?.overview}</p>
         <DetailBtn onClick={() => onBoxClicked(Number(data?.id))}>
           <CgInfo />
